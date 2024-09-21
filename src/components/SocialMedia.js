@@ -34,12 +34,12 @@ const SocialMedia = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const accessToken = 'IGQWRQdUJ1cldqSTduakVzVGstTlFLa0lzVEpoNnJoaml3YWdzVDZApdERwSmswSFN3UXRZANVpVM2w4cDJpdTlwNFVhVEF2YVIwMmVyLVVhd05RbFlUUFUxbHMySk9pTHNnRG50aW13OXRqLThKQ1Vza0ZAjMVRWcWMZD';
+    const accessToken = 'IGQWRQdUJ1cldqSTduakVzVGstTlFLa0lzVEpoNnJoaml3YWdzVDZApdERwSmsIGQWRNaklUOEtqYzJTZA005SnhUZA3JDSTRNNlRPeXVWSTFfVUR1OXJncWxMQXd0YTZAhMlhOY3NPOHNmLVVFUld6NHFTcFZAMcFhUeDJ6WkRLOER2aHVRUk01U0hleTlMajdlcVNMZAXg1QVo0cHVYcEdEaE5UVGd5YncZDwSFN3UXRZANVpVM2w4cDJpdTlwNFVhVEF2YVIwMmVyLVVhd05RbFlUUFUxbHMySk9pTHNnRG50aW13OXRqLThKQ1Vza0ZAjMVRWcWMZD';
 
     const fetchPosts = async () => {
       try {
         const res = await axios.get(`https://graph.instagram.com/me/media?fields=id,media_type,media_url,permalink&access_token=${accessToken}`);
-        console.log("response data" , res);
+        console.log("response data", res.data); // Log the entire response data
         const imagePosts = res.data.data.filter(post => post.media_type === 'IMAGE' || post.media_type === 'CAROUSEL_ALBUM' );
         setPosts(imagePosts);
         setLoading(false);
@@ -58,7 +58,7 @@ const SocialMedia = () => {
       {loading ? (
         <FeedContainer>
           {/* Placeholder to show while loading */}
-          {[...Array(13)].map((_, index) => (
+          {[...Array(6)].map((_, index) => (
             <Placeholder key={index} />
           ))}
         </FeedContainer>

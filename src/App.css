@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+
+
 /* Header Styling */
 header {
   background-color: #333;
@@ -87,4 +90,66 @@ body {
   font-family: 'Montserrat', sans-serif;
   background-color: #f3f4f6;
   color: #333;
+}
+
+/* Navbar Background Image */
+/* Navbar Background Image with Transparency */
+.custom-navbar {
+  position: relative;
+  height: 120px; /* Adjust height as needed */
+  display: flex;
+  flex-direction: column; /* Keep column layout for the brand and links */
+  align-items: center; /* Center all content */
+}
+
+.custom-navbar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../public/manna_logo.jpg'); /* Update this path */
+  background-size: cover;
+  background-position: center;
+  opacity: 0.1; /* Adjust the opacity for transparency */
+  z-index: -1; /* Ensure this is behind the content */
+}
+
+
+/* Centering Navbar Brand */
+.custom-navbar .navbar-brand {
+  margin: 0;
+  text-align: center;
+  font-family: 'Great Vibes', cursive; /* Stylish, flowing script */
+  font-style: italic; /* Apply italic style */
+
+  font-size: 4rem; /* Increased font size */
+  font-weight: bold; /* Make it bold */ /* Adjust size as needed */
+  color: #44376f; /* Change brand text color */
+}
+
+/* Positioning Links in a Row */
+.custom-navbar .navbar-collapse {
+  width: 100%; /* Ensures links take full width */
+  display: flex; /* Flex to align links */
+  justify-content: center; /* Center the links horizontally */
+  align-items: center; /* Vertically align items */
+}
+
+.custom-navbar .nav {
+  display: flex; /* Flexbox to align links horizontally */
+  flex-direction: row; /* Ensure links are in a horizontal row */
+  gap: 20px; /* Space between links */
+}
+
+.custom-navbar .nav-link {
+  color: #fecb00; /* Text color for links */
+  font-size: 1.2rem; /* Increased font size for readability */
+  font-weight: bold; /* Make links bold */
+}
+
+.custom-navbar .nav-link:hover {
+  transition: color 0.3s ease; /* Smooth color transition on hover */
+  color: #050000; /* Change color on hover */
 }

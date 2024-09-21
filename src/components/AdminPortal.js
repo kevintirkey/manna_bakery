@@ -1,20 +1,26 @@
 import React, { useState } from 'react';
 
-const AdminPortal = ({ productList, handleAddProduct }) => {
+const AdminPortal = ({ productList, handleAddProduct, handleEditProduct, handleDeleteProduct }) => {
   const [productName, setProductName] = useState('');
   const [productPrice, setProductPrice] = useState('');
   const [productImage, setProductImage] = useState('');
+  const [editingProduct, setEditingProduct] = useState(null);
 
   const handleAdd = (e) => {
     e.preventDefault();
     const newProduct = {
-      id: productList.length + 1,
+      id: editingProduct ? editingProduct.id : productList.length + 1,
       name: productName,
       price: parseFloat(productPrice),
       image: productImage
     };
 
-    handleAddProduct(newProduct); // Call the function passed from App.js to add the new product
+    if (editingProduct) {
+      handleEditProduct(newProduct);
+      setEditingProduct(null); // Clear editing state after editing
+    } else {
+      handleAddProduct(newProduct);
+    }
 
     // Clear input fields
     setProductName('');
@@ -22,9 +28,20 @@ const AdminPortal = ({ productList, handleAddProduct }) => {
     setProductImage('');
   };
 
+  const handleEdit = (product) => {
+    setProductName(product.name);
+    setProductPrice(product.price);
+    setProductImage(product.image);
+    setEditingProduct(product);
+  };
+
+  const handleDelete = (id) => {
+    handleDeleteProduct(id);
+  };
+
   return (
     <div>
-      <h2>Admin Portal - Add Products</h2>
+      <h2>Admin Portal - Add/Edit Products</h2>
       <form onSubmit={handleAdd}>
         <input
           type="text"
@@ -47,7 +64,7 @@ const AdminPortal = ({ productList, handleAddProduct }) => {
           placeholder="Product Image URL"
           required
         />
-        <button type="submit">Add Product</button>
+        <button type="submit">{editingProduct ? 'Update Product' : 'Add Product'}</button>
       </form>
 
       <div>
@@ -56,7 +73,9 @@ const AdminPortal = ({ productList, handleAddProduct }) => {
           {productList.map((product) => (
             <li key={product.id}>
               {product.name} - ${product.price}{' '}
-              <img src={product.image} alt={product.name} width="50" />
+              <img src={product.image} alt={product.name} width="100" />
+              <button onClick={() => handleEdit(product)}>Edit</button>
+              <button onClick={() => handleDelete(product.id)}>Delete</button>
             </li>
           ))}
         </ul>

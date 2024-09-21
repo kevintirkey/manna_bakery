@@ -1,9 +1,18 @@
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 
 const OrderOnline = ({ productList, cart, setCart }) => {
   const handleAddToCart = (product) => {
-    setCart([...cart, { ...product, quantity: 1 }]);
+    const existingProduct = cart.find(item => item.id === product.id);
+    if (existingProduct) {
+      // Increase quantity if product already exists
+      setCart(cart.map(item =>
+        item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+      ));
+    } else {
+      // Add new product to cart
+      setCart([...cart, { ...product, quantity: 1 }]);
+    }
   };
 
   return (
@@ -40,7 +49,7 @@ const OrderOnline = ({ productList, cart, setCart }) => {
             {cart.length > 0 ? (
               cart.map((item, index) => (
                 <div key={index}>
-                  <p>{item.name} - ${item.price}</p>
+                  <p>{item.name} - ${item.price} x {item.quantity}</p>
                 </div>
               ))
             ) : (
