@@ -1,16 +1,30 @@
-// import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 
-const OrderOnline = ({ productList, cart, setCart }) => {
+const OrderOnline = ({ cart, setCart }) => {
+  const [productList, setProductList] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/products');
+        const data = await response.json();
+        setProductList(data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   const handleAddToCart = (product) => {
-    const existingProduct = cart.find(item => item.id === product.id);
+    const existingProduct = cart.find((item) => item.id === product.id);
     if (existingProduct) {
-      // Increase quantity if product already exists
-      setCart(cart.map(item =>
+      setCart(cart.map((item) =>
         item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
       ));
     } else {
-      // Add new product to cart
       setCart([...cart, { ...product, quantity: 1 }]);
     }
   };
@@ -18,7 +32,7 @@ const OrderOnline = ({ productList, cart, setCart }) => {
   return (
     <Container>
       <Row>
-        <Col md={8}>
+        <Col md={9}>
           <h2 className="my-4">Order Online</h2>
           <Row>
             {productList.length > 0 ? (
@@ -42,14 +56,15 @@ const OrderOnline = ({ productList, cart, setCart }) => {
           </Row>
         </Col>
 
-        {/* Cart on the right side */}
-        <Col md={4}>
+        <Col md={3}>
           <div className="cart-box">
             <h3>Your Cart</h3>
             {cart.length > 0 ? (
               cart.map((item, index) => (
                 <div key={index}>
-                  <p>{item.name} - ${item.price} x {item.quantity}</p>
+                  <p>
+                    {item.name} - ${item.price} x {item.quantity}
+                  </p>
                 </div>
               ))
             ) : (

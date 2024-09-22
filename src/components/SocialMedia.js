@@ -34,7 +34,7 @@ const SocialMedia = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const accessToken = 'IGQWRQdUJ1cldqSTduakVzVGstTlFLa0lzVEpoNnJoaml3YWdzVDZApdERwSmsIGQWRNaklUOEtqYzJTZA005SnhUZA3JDSTRNNlRPeXVWSTFfVUR1OXJncWxMQXd0YTZAhMlhOY3NPOHNmLVVFUld6NHFTcFZAMcFhUeDJ6WkRLOER2aHVRUk01U0hleTlMajdlcVNMZAXg1QVo0cHVYcEdEaE5UVGd5YncZDwSFN3UXRZANVpVM2w4cDJpdTlwNFVhVEF2YVIwMmVyLVVhd05RbFlUUFUxbHMySk9pTHNnRG50aW13OXRqLThKQ1Vza0ZAjMVRWcWMZD';
+    const accessToken = 'IGQWRPME1XWGZALUlh4b0tCWlI1OUk5RGxjdGtXbEJ2VExOUXU0alNDNG1xNzFic19qMkNfaGtYY3RKM1kxUmJFbXRnNFdlWVB0Wk10bUtKdnU1dzhLVVZAPZAGpJSVlpaUllN1htOTQ5YUxHTW1oTkZAkS09OTkVkZATQZD';
 
     const fetchPosts = async () => {
       try {

@@ -56,28 +56,25 @@ function App() {
           </Container>
         </Navbar>
 
-        <main>
+        {/* Added padding to prevent overlapping */}
+        <main className="main-content">
           <Routes>
             <Route exact path="/" element={<SocialMedia />} />
-
-            {/* Pass productList and cart to OrderOnline */}
             <Route
               path="/order"
               element={<OrderOnline productList={productList} cart={cart} setCart={setCart} />}
             />
-
-            {/* Pass productList and handleAddProduct to AdminPortal */}
             <Route
               path="/admin"
-              element={<AdminPortal 
-                productList={productList} 
-                handleAddProduct={handleAddProduct} 
-                handleEditProduct={handleEditProduct}
-                handleDeleteProduct={handleDeleteProduct} 
-              />}
+              element={
+                <AdminPortal 
+                  productList={productList} 
+                  handleAddProduct={handleAddProduct} 
+                  handleEditProduct={handleEditProduct}
+                  handleDeleteProduct={handleDeleteProduct} 
+                />
+              }
             />
-
-            {/* Pass cart and setCart to Checkout */}
             <Route
               path="/checkout"
               element={<Checkout cart={cart} handleClearCart={handleClearCart} setCart={setCart} />}

@@ -1,31 +1,51 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const AdminPortal = ({ productList, handleAddProduct, handleEditProduct, handleDeleteProduct }) => {
+const AdminPortal = () => {
+  const [productList, setProductList] = useState([]);
   const [productName, setProductName] = useState('');
   const [productPrice, setProductPrice] = useState('');
   const [productImage, setProductImage] = useState('');
   const [editingProduct, setEditingProduct] = useState(null);
 
-  const handleAdd = (e) => {
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const response = await fetch('http://localhost:5000/api/products');
+      const data = await response.json();
+      setProductList(data);
+    };
+    fetchProducts();
+  }, []);
+
+  const handleAdd = async (e) => {
     e.preventDefault();
     const newProduct = {
-      id: editingProduct ? editingProduct.id : productList.length + 1,
       name: productName,
       price: parseFloat(productPrice),
-      image: productImage
+      image: productImage,
     };
 
     if (editingProduct) {
-      handleEditProduct(newProduct);
-      setEditingProduct(null); // Clear editing state after editing
+      await fetch(`http://localhost:5000/api/products/${editingProduct.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newProduct),
+      });
+      setEditingProduct(null);
     } else {
-      handleAddProduct(newProduct);
+      await fetch('http://localhost:5000/api/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newProduct),
+      });
     }
 
-    // Clear input fields
     setProductName('');
     setProductPrice('');
     setProductImage('');
+    // Refresh the product list
+    const response = await fetch('http://localhost:5000/api/products');
+    const data = await response.json();
+    setProductList(data);
   };
 
   const handleEdit = (product) => {
@@ -35,8 +55,13 @@ const AdminPortal = ({ productList, handleAddProduct, handleEditProduct, handleD
     setEditingProduct(product);
   };
 
-  const handleDelete = (id) => {
-    handleDeleteProduct(id);
+  const handleDelete = async (id) => {
+    await fetch(`http://localhost:5000/api/products/${id}`, {
+      method: 'DELETE',
+    });
+    const response = await fetch('http://localhost:5000/api/products');
+    const data = await response.json();
+    setProductList(data);
   };
 
   return (
