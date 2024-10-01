@@ -8,6 +8,7 @@ const OrderOnline = ({ cart, setCart }) => {
     const fetchProducts = async () => {
       try {
         const response = await fetch('http://localhost:5000/api/products');
+        console.log(response);
         const data = await response.json();
         setProductList(data);
       } catch (error) {

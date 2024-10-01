@@ -10,13 +10,24 @@ const FeedContainer = styled.div`
   padding: 10px 30px;
 `;
 
-const Post = styled.img`
+const PostImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 8px;
   transition: transform 0.6s ease;
-  
+
+  &:hover {
+    transform: scale(1.25);
+  }
+`;
+
+const PostVideo = styled.video`
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  transition: transform 0.6s ease;
+
   &:hover {
     transform: scale(1.25);
   }
@@ -34,17 +45,24 @@ const SocialMedia = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const accessToken = 'IGQWRPME1XWGZALUlh4b0tCWlI1OUk5RGxjdGtXbEJ2VExOUXU0alNDNG1xNzFic19qMkNfaGtYY3RKM1kxUmJFbXRnNFdlWVB0Wk10bUtKdnU1dzhLVVZAPZAGpJSVlpaUllN1htOTQ5YUxHTW1oTkZAkS09OTkVkZATQZD';
+    const accessToken = 'IGQWRNUDIwdlh0OW9fY3AtSHB3U3YtaTBUWUdvUVdQVE44ejNNNlBpR0h5aXJvS3FvdUdtUGpvcVNYN3RhVHJxRWgxNXlWWi1QUmpvWmxDX0hUMTZASejRJMkwwcEE0RDJURnFldjM0YlloOF9oTXhjZAHRvZAmVqTnMZD'; // Replace with your access token
 
     const fetchPosts = async () => {
       try {
-        const res = await axios.get(`https://graph.instagram.com/me/media?fields=id,media_type,media_url,permalink&access_token=${accessToken}`);
-        console.log("response data", res.data); // Log the entire response data
-        const imagePosts = res.data.data.filter(post => post.media_type === 'IMAGE' || post.media_type === 'CAROUSEL_ALBUM' );
-        setPosts(imagePosts);
-        setLoading(false);
+        const res = await axios.get(`https://graph.instagram.com/me/media?fields=id,media_type,media_url,permalink,thumbnail_url&access_token=${accessToken}`);
+        console.log("response data", res.data);
+
+        // Filter for image and video posts
+        const filteredPosts = res.data.data.filter(post => 
+          post.media_type === 'IMAGE' || 
+          post.media_type === 'CAROUSEL_ALBUM' || 
+          post.media_type === 'VIDEO'
+        );
+
+        setPosts(filteredPosts);
       } catch (error) {
         console.error('Error fetching Instagram posts', error);
+      } finally {
         setLoading(false);
       }
     };
@@ -58,7 +76,7 @@ const SocialMedia = () => {
       {loading ? (
         <FeedContainer>
           {/* Placeholder to show while loading */}
-          {[...Array(6)].map((_, index) => (
+          {[...Array(13)].map((_, index) => (
             <Placeholder key={index} />
           ))}
         </FeedContainer>
@@ -66,7 +84,14 @@ const SocialMedia = () => {
         <FeedContainer>
           {posts.map((post) => (
             <a href={post.permalink} key={post.id} target="_blank" rel="noopener noreferrer">
-              <Post src={post.media_url} alt="Instagram post" />
+              {post.media_type === 'VIDEO' ? (
+                <PostVideo controls>
+                  <source src={post.media_url} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </PostVideo>
+              ) : (
+                <PostImage src={post.media_url} alt="Instagram post" />
+              )}
             </a>
           ))}
         </FeedContainer>
